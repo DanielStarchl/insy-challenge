@@ -1,1 +1,42 @@
+Sehr geehrter Herr Prof.
+
+Danke für das durchmachen dieser Challenge, es bedeutet mir sehr viel. 
+Da ich gestern den ganzen Tag damit beschäftigt gewesen bin eine Lösung für diese Situation zu finden, suchte ich nach etwas
+ungewöhlichem. 
+Etwas dass trotzdem noch Leistung bringt. Also entschied ich mich für etwas interaktivem. 
+Ich befasste mich gestern intensiv mit sql-injections und den häufigsten Methoden und wie man sich davor schützt
+Um jetzt noch zu beweisen dass es sich völlig um meine eigene Leistung handelt ist anbei ein vollständiges Protokoll zum Programmcode
+
+Besonders interessant ist Diese Stelle hier.
+Da wir in Sew bereits mit jdbc gearbeitet haben, war es ziemlich einfach einen try/catch block mit einer verbindung aufzustellen 
+
+        try(Connection conn = DriverManager.getConnection("jdbc:sqlite::memory:")) {
+            Statement stmt = conn.createStatement();
+            stmt.execute("Create table if not exists users(username Text , password Text) ");
+            stmt.execute("Insert into users values('admin','stritzi')");
+ 
+Hier wird der Schädliche Code ausgeführt bei dem pw als variable statt parameter drangehängt wird
+
+            String input = "Select * from users where username = 'admin' and password='" + pw + "'";
+            System.out.println("Query: " + input);
+            ResultSet rs = stmt.executeQuery(input);
+
+            if (rs.next()){
+                System.out.println("Login success!");
+
+Hier wird eine File mit getDesktop().open() Quelle: https://stackoverflow.com/questions/26334556/open-a-file-using-desktopjava-awt
+                File file = new File("proof.txt");
+                if (file.exists()){
+                    Desktop.getDesktop().open(file);
+                }
+            }else{
+                System.out.println("Login Failed");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+}
+
 
